@@ -1,0 +1,829 @@
+CREATE TABLE products (
+    product_id INTEGER PRIMARY KEY,
+    product_name VARCHAR(50) NOT NULL,
+    categories VARCHAR(30),
+    type_of_product VARCHAR(30),
+    price INTEGER,
+    shp_id FOREIGN KEY REFERENCES shipping_service(ship_id),
+    inventory_id FOREIGN KEY REFERENCES inventory(inventory_id),
+    store_id FOREIGN KEY REFERENCES mystore(store_id),
+    sd_id FOREIGN KEY REFERENCES sales_data(sd_id),
+    customer_id FOREIGN KEY REFERENCES customer(customer_id),
+    rc_id FOREIGN KEY REFERENCES regular_customers(rc_id),
+    manufacturer_id FOREIGN KEY REFERENCES manufacturer(man_id)
+);
+
+CREATE TABLE  sales_data (
+    sd_id INTEGER PRIMARY KEY,
+    region VARCHAR(30) NOT NULL,
+    num_of_sales INTEGER,
+    product_id FOREIGN KEY REFERENCES products(product_id)
+);
+
+CREATE TABLE contract(
+    contract_id INTEGER PRIMARY KEY,
+    card_number INTEGER,
+    purchase_counter INTEGER,
+    total_price INTEGER,
+    store_id FOREIGN KEY REFERENCES mystore(store_id),
+    rc_id FOREIGN KEY REFERENCES regular_customers(rc_id)
+
+);
+
+CREATE TABLE customer(
+    customer_id INTEGER PRIMARY KEY,
+    customer_f_name VARCHAR(30) NOT NULL,
+    customer_l_name VARCHAR(30) NOT NULL,
+    address VARCHAR(54),
+    country VARCHAR(30),
+    ship_id FOREIGN KEY REFERENCES shipping_service(ship_id),
+    store_id FOREIGN KEY REFERENCES mystore(store_id),
+    product_id FOREIGN KEY REFERENCES products(product_id)
+);
+
+CREATE TABLE inventory(
+    inventory_id INTEGER PRIMARY KEY,
+    num_of_allproducts INTEGER,
+    sold_products VARCHAR,
+    new_products VARCHAR,
+    product_id FOREIGN KEY REFERENCES products(product_id)
+);
+
+CREATE TABLE mystore(
+    store_id INTEGER PRIMARY KEY,
+    product_id FOREIGN KEY REFERENCES products(product_id),
+    employee_id FOREIGN KEY REFERENCES employee(emp_id),
+    customer_id FOREIGN KEY REFERENCES customer(customer_id),
+    contract_id FOREIGN KEY REFERENCES contract(contract_id),
+    rc_id FOREIGN KEY REFERENCES regular_customers(rc_id)
+);
+
+CREATE TABLE employee(
+    emp_id INTEGER PRIMARY KEY,
+    emp_f_name VARCHAR(30) NOT NULL,
+    emp_l_name VARCHAR(30) NOT NULL,
+    specialization VARCHAR,
+    phone VARCHAR (20),
+    store_id FOREIGN KEY REFERENCES mystore(store_id)
+);
+
+CREATE TABLE shipping_service(
+	ship_id INTEGER PRIMARY KEY,
+	tracking_number INTEGER,
+	ship_name VARCHAR(50),
+	day_sending DATE,
+	day_receiving DATE,
+	product_id FOREIGN KEY REFERENCES products(product_id),
+	customer_id FOREIGN KEY REFERENCES customer(customer_id),
+	store_id FOREIGN KEY REFERENCES mystore(store_id),
+	rc_id FOREIGN KEY REFERENCES regular_customers(rc_id),
+);
+
+CREATE TABLE regular_customer(
+	rc_id INTEGER PRIMARY KEY,
+	rc_f_name VARCHAR(30) NOT NULL,
+	rc_l_name VARCHAR(30) NOT NULL,
+	address VARCHAR(54),
+    country VARCHAR(30),
+    ship_id FOREIGN KEY REFERENCES shipping_service(ship_id),
+    store_id FOREIGN KEY REFERENCES mystore(store_id),
+    product_id FOREIGN KEY REFERENCES products(product_id),
+	contract_id FOREIGN KEY REFERENCES contract(contract_id)
+);
+
+CREATE TABLE manufacturer(
+	man_id INTEGER PRIMARY KEY,
+	man_name VARCHAR(50),
+)
+
+
+------------------------------------------------------------------------------------------------------
+CREATE TABLE products (
+    product_id int PRIMARY KEY,
+    product_name varchar(30) NOT NULL,
+    categories varchar(30),
+    type_of_product varchar(30),
+    price int,
+	manufacturer_id int REFERENCES manufacturer(man_id)
+);
+
+CREATE TABLE  sales_data (
+    sd_id int PRIMARY KEY,
+    region varchar(30) NOT NULL,
+    num_of_sales int,
+    product_id int REFERENCES products(product_id)
+);
+
+CREATE TABLE contract(
+    contract_id int PRIMARY KEY,
+    card_number int,
+    purchase_counter int,
+    total_price int,
+    store_id int REFERENCES mystore(store_id)
+);
+
+CREATE TABLE customer(
+    customer_id int PRIMARY KEY,
+    customer_f_name varchar(30) NOT NULL,
+    customer_l_name varchar(30) NOT NULL,
+    address varchar(54),
+    country varchar(30),
+    ship_id int REFERENCES shipping_service(ship_id)
+);
+
+CREATE TABLE inventory(
+    inventory_id int PRIMARY KEY,
+    num_of_allproducts int,
+    sold_products varchar,
+    new_products varchar,
+    product_id int REFERENCES products(product_id)
+);
+
+CREATE TABLE mystore(
+    store_id int PRIMARY KEY,
+    product_id int REFERENCES products(product_id),
+    employee_id int REFERENCES employee(emp_id)
+);
+
+CREATE TABLE employee(
+    emp_id int PRIMARY KEY,
+    emp_f_name varchar(30) NOT NULL,
+    emp_l_name varchar(30) NOT NULL,
+    specialization varchar,
+    phone varchar (20)
+);
+
+CREATE TABLE shipping_service(
+	ship_id int PRIMARY KEY,
+	tracking_number int,
+	ship_name varchar(50),
+	day_sending DATE,
+	day_receiving DATE,
+	product_id int REFERENCES products(product_id),
+	store_id int REFERENCES mystore(store_id)
+);
+
+CREATE TABLE regular_customer(
+	rc_id int PRIMARY KEY,
+	rc_f_name varchar(30) NOT NULL,
+	rc_l_name varchar(30) NOT NULL,
+	address varchar(54),
+    country varchar(30),
+    ship_id int REFERENCES shipping_service(ship_id),
+	contract_id int REFERENCES contract(contract_id)
+);
+
+CREATE TABLE manufacturer(
+	man_id int PRIMARY KEY,
+	man_name varchar(50)
+);
+
+
+
+-------INSERTION------
+insert into manufacturer (man_id, man_name) values (1, 'Tekfly');
+insert into manufacturer (man_id, man_name) values (2, 'Realblab');
+insert into manufacturer (man_id, man_name) values (3, 'Skiptube');
+insert into manufacturer (man_id, man_name) values (4, 'Twiyo');
+insert into manufacturer (man_id, man_name) values (5, 'Yodel');
+insert into manufacturer (man_id, man_name) values (6, 'Zoonder');
+insert into manufacturer (man_id, man_name) values (7, 'Rooxo');
+insert into manufacturer (man_id, man_name) values (8, 'Youtags');
+insert into manufacturer (man_id, man_name) values (9, 'Quamba');
+insert into manufacturer (man_id, man_name) values (10, 'Topicstorm');
+
+
+
+insert into employee (emp_id, emp_f_name, emp_l_name, specialization, phone) values (1, 'Nicola', 'Carney', 'Biostatistician IV', '436-379-4063');
+insert into employee (emp_id, emp_f_name, emp_l_name, specialization, phone) values (2, 'Ericha', 'Quest', 'Analyst Programmer', '251-892-9318');
+insert into employee (emp_id, emp_f_name, emp_l_name, specialization, phone) values (3, 'Bridget', 'Ferris', 'Financial Advisor', '662-156-4902');
+insert into employee (emp_id, emp_f_name, emp_l_name, specialization, phone) values (4, 'Courtnay', 'Whitebrook', 'Legal Assistant', '812-901-8982');
+insert into employee (emp_id, emp_f_name, emp_l_name, specialization, phone) values (5, 'Oneida', 'Antognetti', 'Accountant II', '732-604-3908');
+insert into employee (emp_id, emp_f_name, emp_l_name, specialization, phone) values (6, 'Bo', 'Collett', 'Compensation Analyst', '889-235-9623');
+insert into employee (emp_id, emp_f_name, emp_l_name, specialization, phone) values (7, 'Rici', 'Hanvey', 'Internal Auditor', '223-955-1824');
+insert into employee (emp_id, emp_f_name, emp_l_name, specialization, phone) values (8, 'Carny', 'Gallihaulk', 'Biostatistician III', '626-415-0809');
+insert into employee (emp_id, emp_f_name, emp_l_name, specialization, phone) values (9, 'Moses', 'Ryding', 'Account Representative II', '689-466-4327');
+insert into employee (emp_id, emp_f_name, emp_l_name, specialization, phone) values (10, 'Lem', 'Beagan', 'Librarian', '316-529-0812');
+insert into employee (emp_id, emp_f_name, emp_l_name, specialization, phone) values (11, 'Jocelyne', 'Decroix', 'Administrative Officer', '373-987-9098');
+insert into employee (emp_id, emp_f_name, emp_l_name, specialization, phone) values (12, 'Murry', 'Beadnell', 'Safety Technician I', '462-318-4886');
+insert into employee (emp_id, emp_f_name, emp_l_name, specialization, phone) values (13, 'Myron', 'Penner', 'Speech Pathologist', '555-804-5343');
+insert into employee (emp_id, emp_f_name, emp_l_name, specialization, phone) values (14, 'Margy', 'Lavell', 'Professor', '779-112-4593');
+insert into employee (emp_id, emp_f_name, emp_l_name, specialization, phone) values (15, 'Hazel', 'Sargerson', 'Accountant IV', '237-267-7540');
+
+
+
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (1, 'Puree - Blackcurrant', 'Home', 'Beauty', 984, 5);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (2, 'Aspic - Amber', 'Beauty', 'Baby', 338, 5);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (3, 'Milk 2% 500 Ml', 'Grocery', 'Games', 364, 10);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (4, 'Tea - Green', 'Clothing', 'Games', 61, 1);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (5, 'Sausage - Meat', 'Baby', 'Clothing', 386, 1);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (6, 'Wine - Tio Pepe Sherry Fino', 'Beauty', 'Health', 291, 1);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (7, 'Coffee - Espresso', 'Health', 'Sports', 158, 1);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (8, 'Vinegar - White', 'Jewelry', 'Sports', 371, 7);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (9, 'Ecolab - Hobart Washarm End Cap', 'Clothing', 'Kids', 309, 6);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (10, 'Lobster - Baby, Boiled', 'Electronics', 'Outdoors', 300, 3);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (11, 'Lumpfish Black', 'Kids', 'Tools', 893, 3);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (12, 'Lid Coffeecup 12oz D9542b', 'Outdoors', 'Home', 919, 4);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (13, 'Veal - Liver', 'Home', 'Garden', 540, 9);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (14, 'Parsley - Fresh', 'Toys', 'Tools', 703, 9);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (15, 'Sauce - Demi Glace', 'Automotive', 'Movies', 89, 5);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (16, 'Soupfoamcont12oz 112con', 'Computers', 'Clothing', 806, 9);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (17, 'Ice - Clear, 300 Lb For Carving', 'Tools', 'Industrial', 712, 2);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (18, 'Piping Jelly - All Colours', 'Clothing', 'Grocery', 678, 6);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (19, 'Quail - Jumbo Boneless', 'Industrial', 'Beauty', 243, 7);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (20, 'Wine - Two Oceans Sauvignon', 'Computers', 'Sports', 543, 1);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (21, 'Bag - Bread, White, Plain', 'Sports', 'Sports', 162, 10);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (22, 'Wine - Red, Black Opal Shiraz', 'Games', 'Movies', 449, 5);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (23, 'Wine - Cotes Du Rhone', 'Baby', 'Music', 931, 7);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (24, 'Wine - Marlbourough Sauv Blanc', 'Games', 'Baby', 811, 2);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (25, 'Banana', 'Kids', 'Sports', 280, 2);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (26, 'Flower - Potmums', 'Movies', 'Grocery', 432, 1);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (27, 'Tarts Assorted', 'Toys', 'Garden', 716, 4);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (28, 'Nantuket Peach Orange', 'Industrial', 'Music', 762, 6);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (29, 'Veal - Liver', 'Computers', 'Beauty', 127, 10);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (30, 'Cheese - Havarti, Roasted Garlic', 'Electronics', 'Music', 268, 4);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (31, 'Rum - Light, Captain Morgan', 'Automotive', 'Baby', 491, 10);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (32, 'Nut - Chestnuts, Whole', 'Outdoors', 'Outdoors', 814, 10);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (33, 'Honey - Comb', 'Automotive', 'Electronics', 982, 3);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (34, 'Apricots - Dried', 'Health', 'Electronics', 998, 8);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (35, 'Rabbit - Legs', 'Home', 'Clothing', 817, 2);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (36, 'Celery', 'Sports', 'Grocery', 910, 7);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (37, 'Bread Base - Toscano', 'Automotive', 'Shoes', 685, 7);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (38, 'Coffee - Hazelnut Cream', 'Industrial', 'Home', 192, 8);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (39, 'Cod - Salted, Boneless', 'Home', 'Beauty', 883, 7);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (40, 'Veal - Heart', 'Baby', 'Health', 735, 3);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (41, 'Syrup - Monin - Passion Fruit', 'Kids', 'Games', 381, 8);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (42, 'Pomello', 'Beauty', 'Tools', 857, 7);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (43, 'Container - Clear 16 Oz', 'Music', 'Beauty', 730, 3);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (44, 'Parsley - Dried', 'Beauty', 'Tools', 577, 9);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (45, 'Coffee - Colombian, Portioned', 'Automotive', 'Automotive', 640, 10);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (46, 'Oil - Truffle, Black', 'Computers', 'Clothing', 304, 4);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (47, 'Aspic - Clear', 'Outdoors', 'Games', 266, 6);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (48, 'V8 - Tropical Blend', 'Automotive', 'Toys', 897, 6);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (49, 'Wine - Domaine Boyar Royal', 'Home', 'Outdoors', 579, 7);
+insert into products (product_id, product_name, categories, type_of_product, price, manufacturer_id) values (50, 'Cloves - Whole', 'Grocery', 'Shoes', 172, 3);
+
+
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (1, 'Gaowu', 1896, 43);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (2, 'Shuangfeng', 1987, 29);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (3, 'Priiskovyy', 5935, 31);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (4, 'Panglanjan', 291, 40);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (5, 'Dan Makham Tia', 2395, 4);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (6, 'Saraktash', 707, 9);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (7, 'Sujji', 8602, 22);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (8, 'Xindai', 7434, 40);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (9, 'Łapanów', 844, 24);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (10, 'Sơn Tây', 5158, 11);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (11, 'Philadelphia', 580, 32);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (12, 'Hengdaohezi', 9500, 40);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (13, 'Kirovgrad', 325, 27);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (14, 'La Dorada', 7468, 47);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (15, 'Banjar Paangkelod', 72, 11);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (16, 'Daogao', 6222, 1);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (17, 'Komorniki', 1978, 10);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (18, 'Fagatogo', 3067, 16);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (19, 'Maha Sarakham', 6452, 17);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (20, 'Gradishtë', 1031, 15);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (21, 'Abua', 8389, 44);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (22, 'Jalanbaru', 8268, 2);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (23, 'Jiegan', 9981, 49);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (24, 'Fangxi', 5992, 7);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (25, 'Halden', 6101, 40);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (26, 'Chengtian', 2800, 7);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (27, 'Kotadukuh', 4842, 50);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (28, 'Soloneshnoye', 5542, 27);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (29, 'Žitenice', 3099, 9);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (30, 'Atiquizaya', 1275, 32);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (31, 'Briey', 3016, 43);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (32, 'Fangli', 300, 3);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (33, 'Martapura', 8390, 35);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (34, 'Shangzhuang', 9150, 50);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (35, 'Västra Frölunda', 1916, 45);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (36, 'Diourbel', 5678, 18);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (37, 'Donghu', 5997, 9);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (38, 'Měcholupy', 8133, 10);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (39, 'Xinbao', 151, 47);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (40, 'Kaum Kaler', 9081, 41);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (41, 'Dadiya', 7663, 7);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (42, 'Mundolsheim', 1518, 7);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (43, 'Kalenderovci Donji', 3797, 47);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (44, 'Futian', 5721, 4);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (45, 'Nihommatsu', 7565, 42);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (46, 'Diyarb Najm', 9987, 21);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (47, 'Accha', 5705, 20);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (48, 'Boca de Parita', 7839, 22);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (49, 'Camlachie', 5446, 6);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (50, 'Izyum', 7587, 26);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (51, 'Velika', 9351, 16);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (52, 'Meipu', 5273, 6);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (53, 'Paterson', 7024, 41);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (54, 'Indang', 566, 31);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (55, 'Newala Kisimani', 2539, 42);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (56, 'Buenos Aires', 6453, 32);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (57, 'Almere Haven', 1742, 21);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (58, 'Longfeng', 9589, 24);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (59, 'Ngluwuk', 7187, 21);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (60, 'Dniprodzerzhyns’k', 1675, 28);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (61, 'Bungkulan', 2871, 6);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (62, 'Pekijing', 4549, 27);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (63, 'Rochefort', 6636, 10);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (64, 'Pegões', 2252, 38);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (65, 'Lugovoy', 8220, 3);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (66, 'La Peña', 146, 23);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (67, 'Krupanj', 6080, 23);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (68, 'Chengbei', 711, 2);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (69, 'Jiahe', 9264, 22);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (70, 'Wuppertal', 9841, 29);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (71, 'Tsotsin-Yurt', 8837, 46);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (72, 'Viana', 8282, 7);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (73, 'Wuli', 9453, 7);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (74, 'Oslo', 4542, 28);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (75, 'Tomarovka', 1332, 30);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (76, 'Huddinge', 711, 10);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (77, 'Vitoria-Gasteiz', 112, 3);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (78, 'Jendouba', 964, 19);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (79, 'Longwy', 8717, 46);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (80, 'Lantapan', 9618, 22);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (81, 'Luka nad Jihlavou', 8945, 34);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (82, 'Erniusuokou', 7353, 19);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (83, 'Bétérou', 6379, 44);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (84, 'Orissaare', 9869, 14);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (85, 'Mtambile', 6693, 39);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (86, 'Monaghan', 3400, 34);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (87, 'Qızılhacılı', 6147, 40);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (88, 'Al Jadīd', 6856, 30);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (89, 'Chipinge', 7208, 50);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (90, 'Centurion', 6685, 49);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (91, 'Killam', 172, 12);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (92, 'Halmstad', 2396, 17);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (93, 'Zhengguo', 3671, 48);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (94, 'Tete', 578, 19);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (95, 'Arganil', 6737, 34);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (96, 'Wielki Kack', 8606, 45);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (97, 'Alor Setar', 6573, 47);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (98, 'Taunan', 3809, 21);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (99, 'Grand Sable', 5940, 34);
+insert into sales_data (sd_id, region, num_of_sales, product_id) values (100, 'Manaloal', 9192, 8);
+
+
+insert into mystore (store_id, product_id, employee_id) values (1, 45, 14);
+insert into mystore (store_id, product_id, employee_id) values (2, 24, 7);
+insert into mystore (store_id, product_id, employee_id) values (3, 14, 15);
+insert into mystore (store_id, product_id, employee_id) values (4, 31, 8);
+insert into mystore (store_id, product_id, employee_id) values (5, 22, 2);
+insert into mystore (store_id, product_id, employee_id) values (6, 1, 15);
+insert into mystore (store_id, product_id, employee_id) values (7, 15, 8);
+insert into mystore (store_id, product_id, employee_id) values (8, 4, 10);
+insert into mystore (store_id, product_id, employee_id) values (9, 31, 1);
+insert into mystore (store_id, product_id, employee_id) values (10, 9, 6);
+insert into mystore (store_id, product_id, employee_id) values (11, 36, 2);
+insert into mystore (store_id, product_id, employee_id) values (12, 40, 6);
+insert into mystore (store_id, product_id, employee_id) values (13, 21, 11);
+insert into mystore (store_id, product_id, employee_id) values (14, 8, 10);
+insert into mystore (store_id, product_id, employee_id) values (15, 13, 6);
+insert into mystore (store_id, product_id, employee_id) values (16, 48, 2);
+insert into mystore (store_id, product_id, employee_id) values (17, 25, 10);
+insert into mystore (store_id, product_id, employee_id) values (18, 4, 9);
+insert into mystore (store_id, product_id, employee_id) values (19, 19, 9);
+insert into mystore (store_id, product_id, employee_id) values (20, 47, 15);
+insert into mystore (store_id, product_id, employee_id) values (21, 1, 8);
+insert into mystore (store_id, product_id, employee_id) values (22, 49, 1);
+insert into mystore (store_id, product_id, employee_id) values (23, 16, 11);
+insert into mystore (store_id, product_id, employee_id) values (24, 33, 3);
+insert into mystore (store_id, product_id, employee_id) values (25, 15, 10);
+insert into mystore (store_id, product_id, employee_id) values (26, 43, 1);
+insert into mystore (store_id, product_id, employee_id) values (27, 17, 14);
+insert into mystore (store_id, product_id, employee_id) values (28, 44, 12);
+insert into mystore (store_id, product_id, employee_id) values (29, 24, 15);
+insert into mystore (store_id, product_id, employee_id) values (30, 11, 6);
+insert into mystore (store_id, product_id, employee_id) values (31, 18, 5);
+insert into mystore (store_id, product_id, employee_id) values (32, 37, 12);
+insert into mystore (store_id, product_id, employee_id) values (33, 10, 11);
+insert into mystore (store_id, product_id, employee_id) values (34, 19, 12);
+insert into mystore (store_id, product_id, employee_id) values (35, 44, 2);
+insert into mystore (store_id, product_id, employee_id) values (36, 31, 12);
+insert into mystore (store_id, product_id, employee_id) values (37, 39, 3);
+insert into mystore (store_id, product_id, employee_id) values (38, 47, 10);
+insert into mystore (store_id, product_id, employee_id) values (39, 33, 6);
+insert into mystore (store_id, product_id, employee_id) values (40, 3, 12);
+insert into mystore (store_id, product_id, employee_id) values (41, 1, 14);
+insert into mystore (store_id, product_id, employee_id) values (42, 14, 1);
+insert into mystore (store_id, product_id, employee_id) values (43, 21, 3);
+insert into mystore (store_id, product_id, employee_id) values (44, 25, 8);
+insert into mystore (store_id, product_id, employee_id) values (45, 20, 12);
+insert into mystore (store_id, product_id, employee_id) values (46, 33, 1);
+insert into mystore (store_id, product_id, employee_id) values (47, 36, 8);
+insert into mystore (store_id, product_id, employee_id) values (48, 8, 14);
+insert into mystore (store_id, product_id, employee_id) values (49, 2, 15);
+insert into mystore (store_id, product_id, employee_id) values (50, 40, 3);
+
+
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (1, 35, 66, 68, 17);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (2, 28, 39, 30, 10);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (3, 40, 96, 26, 9);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (4, 23, 72, 91, 49);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (5, 14, 85, 21, 46);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (6, 19, 79, 72, 50);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (7, 19, 47, 66, 28);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (8, 28, 15, 93, 29);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (9, 19, 98, 92, 26);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (10, 18, 2, 78, 39);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (11, 6, 26, 100, 39);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (12, 16, 80, 96, 49);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (13, 37, 98, 71, 30);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (14, 39, 81, 7, 49);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (15, 29, 69, 30, 14);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (16, 42, 30, 36, 42);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (17, 13, 16, 100, 50);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (18, 49, 12, 5, 10);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (19, 16, 97, 55, 20);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (20, 37, 60, 49, 50);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (21, 39, 62, 47, 14);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (22, 1, 32, 9, 22);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (23, 24, 62, 85, 43);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (24, 43, 24, 34, 46);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (25, 17, 90, 14, 30);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (26, 32, 98, 67, 27);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (27, 9, 68, 76, 2);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (28, 12, 18, 87, 3);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (29, 1, 65, 14, 18);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (30, 47, 67, 88, 30);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (31, 46, 91, 80, 36);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (32, 16, 66, 77, 13);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (33, 43, 80, 28, 13);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (34, 18, 48, 48, 36);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (35, 38, 53, 25, 2);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (36, 4, 60, 97, 24);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (37, 5, 50, 23, 5);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (38, 37, 35, 35, 46);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (39, 40, 25, 37, 10);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (40, 15, 24, 2, 20);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (41, 25, 25, 65, 33);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (42, 23, 54, 68, 24);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (43, 35, 42, 68, 38);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (44, 20, 35, 15, 38);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (45, 10, 48, 13, 27);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (46, 16, 3, 83, 30);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (47, 4, 8, 42, 15);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (48, 3, 64, 13, 42);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (49, 20, 72, 2, 39);
+insert into inventory (inventory_id, num_of_allproducts, sold_products, new_products, product_id) values (50, 24, 24, 50, 25);
+
+
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (1, '4041597068719390', 12, 941, 44);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (2, '5247564281573557', 53, 118, 30);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (3, '5220078511850488', 43, 332, 33);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (4, '4017954318341', 24, 158, 27);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (5, '5100149406616725', 16, 117, 19);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (6, '5145353658779374', 63, 678, 49);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (7, '4041373998319', 87, 668, 1);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (8, '5048371760574671', 93, 633, 5);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (9, '5100145418600285', 32, 996, 23);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (10, '5100140223747611', 85, 271, 50);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (11, '5527622633714260', 55, 907, 3);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (12, '4762628442606727', 51, 85, 49);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (13, '5332902863551672', 18, 917, 27);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (14, '5100137761824059', 38, 959, 1);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (15, '4041596950253', 29, 469, 36);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (16, '4041377989157', 65, 978, 11);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (17, '4041376368985617', 49, 288, 23);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (18, '5100139592120871', 88, 981, 35);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (19, '4017958716573', 68, 886, 12);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (20, '5437525690664071', 34, 109, 15);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (21, '4777497426502887', 45, 98, 50);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (22, '4193016394598960', 38, 638, 22);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (23, '5518014969314405', 69, 843, 46);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (24, '5048375496090365', 16, 676, 9);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (25, '5525901542389154', 25, 373, 12);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (26, '5137784519272557', 96, 223, 24);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (27, '5010121128361913', 91, 838, 22);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (28, '5569746110689080', 90, 530, 9);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (29, '4017955954862', 49, 146, 29);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (30, '4432101020635', 30, 110, 31);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (31, '5100175311215055', 7, 545, 18);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (32, '4076818539807', 66, 728, 8);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (33, '4932805701604', 72, 574, 41);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (34, '5485769764137017', 50, 773, 8);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (35, '4017954205001', 63, 868, 4);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (36, '5100172850809000', 41, 914, 46);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (37, '5100147533460728', 49, 938, 37);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (38, '5100130535171808', 64, 251, 12);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (39, '4041376243630', 46, 614, 37);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (40, '5100140643645841', 93, 2, 28);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (41, '4041371161869944', 23, 41, 30);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (42, '5532386232164045', 62, 779, 31);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (43, '5100136039404009', 35, 559, 5);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (44, '5048377272507000', 90, 13, 49);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (45, '4886431398609287', 93, 897, 38);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (46, '4017952990903341', 95, 822, 23);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (47, '4041376592119', 86, 605, 19);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (48, '4041590494879516', 82, 260, 48);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (49, '5007662073732678', 34, 324, 50);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (50, '5108759802862780', 46, 9, 41);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (51, '5010123395243584', 38, 840, 32);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (52, '5437742902482180', 34, 540, 50);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (53, '5002354967983410', 86, 532, 27);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (54, '5108753897267112', 36, 534, 7);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (55, '4041370183873', 95, 766, 8);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (56, '5100149787777823', 89, 748, 6);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (57, '4041372377619529', 20, 714, 38);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (58, '5007663677714104', 45, 584, 25);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (59, '5100145848746534', 50, 778, 17);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (60, '4041592204740418', 72, 115, 3);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (61, '4017957801087044', 9, 113, 2);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (62, '5002355054930578', 32, 230, 30);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (63, '5100143016421378', 45, 278, 4);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (64, '4041373226151607', 84, 675, 24);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (65, '4146637373835', 42, 315, 7);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (66, '5100145267718063', 14, 799, 2);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (67, '5100142102679188', 92, 206, 13);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (68, '5010128225078241', 42, 925, 17);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (69, '4468928141105', 46, 899, 29);
+insert into contract (contract_id, card_number, purchase_counter, total_price, store_id) values (70, '4041375815396', 98, 189, 40);
+
+
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (1, 899099, 'Pauper Milkvetch', '2007-01-02', '2017-04-29', 47, 40);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (2, 407031, 'Shrubby Pencilflower', '2016-07-09', '2018-05-12', 47, 35);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (3, 384281, 'Ludwig''s Pohlia Moss', '2013-07-05', '2005-10-23', 33, 13);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (4, 698639, 'Hairy Braya', '2003-04-11', '2008-09-30', 19, 44);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (5, 520247, 'Red Dome Blanketflower', '2002-07-23', '2015-09-13', 12, 18);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (6, 482737, 'Shrubby Nightshade', '2021-11-11', '2008-03-26', 22, 11);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (7, 369943, 'Philonotis Moss', '2014-09-29', '2018-01-22', 13, 34);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (8, 683574, 'Hedgehog Cactus', '2016-09-12', '2001-03-17', 42, 31);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (9, 376370, 'Prairie Sagewort', '2016-01-20', '2015-08-13', 30, 5);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (10, 710152, 'Mono Lake Lupine', '2017-11-16', '2001-08-24', 18, 17);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (11, 975464, 'Pampas Grass', '2017-09-15', '2012-01-23', 48, 45);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (12, 769720, 'Water Dawnflower', '2003-10-04', '2018-07-10', 20, 43);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (13, 969560, 'Swamp Stonecrop', '2013-12-23', '2019-07-15', 48, 31);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (14, 903484, 'Fragile Hempvine', '2003-06-05', '2019-08-19', 11, 24);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (15, 439608, 'Western Juniper', '2019-03-24', '2017-09-18', 12, 4);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (16, 643960, 'Pilot Range Cinquefoil', '2011-01-25', '2003-05-11', 15, 20);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (17, 284812, 'Rimrock Milkvetch', '2019-02-02', '2006-08-25', 39, 10);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (18, 973143, 'Groundcover Milkvetch', '2019-07-03', '2009-12-22', 3, 19);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (19, 552762, 'Rapp''s Cup Lichen', '2021-11-25', '2002-07-08', 4, 33);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (20, 877182, 'Deepwoods Fern', '2002-12-26', '2007-10-07', 23, 19);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (21, 858190, 'Jepson Ceanothus', '2013-07-26', '2013-10-14', 32, 11);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (22, 483245, 'Peltula Lichen', '2012-12-18', '2012-02-20', 18, 49);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (23, 924896, 'Pyrenopsis Lichen', '2016-08-06', '2014-09-03', 12, 18);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (24, 315774, 'Black Spikerush', '2001-01-26', '2012-09-27', 12, 25);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (25, 690589, 'Pokeweed', '2010-02-11', '2005-07-16', 21, 31);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (26, 714965, 'Mountain Goldenbanner', '2012-06-30', '2004-06-02', 46, 18);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (27, 150648, 'Storm Saxifrage', '2013-08-27', '2019-05-26', 14, 36);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (28, 452079, 'Hawai''i Bluegrass', '2015-04-07', '2015-07-07', 46, 31);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (29, 701687, 'Pasionaria De Cercas', '2007-05-28', '2010-03-02', 8, 25);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (30, 868219, 'Sticky Sandspurry', '2016-03-02', '2020-05-25', 34, 33);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (31, 718048, 'Indian Rushpea', '2020-06-16', '2017-01-01', 31, 18);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (32, 614044, 'Needle Stonecrop', '2012-09-30', '2014-02-13', 13, 36);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (33, 218093, 'Erectleaf Panicgrass', '2004-01-01', '2014-02-20', 37, 38);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (34, 196924, 'Scandix', '2006-03-07', '2008-03-15', 1, 29);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (35, 113772, 'Warty Spurge', '2010-04-20', '2007-06-08', 35, 33);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (36, 432256, 'Little Nipple Cactus', '2000-09-01', '2002-08-15', 28, 12);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (37, 200194, 'Irisleaf Rush', '2018-11-13', '2013-06-24', 17, 18);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (38, 121381, 'Winter Aconite', '2019-10-18', '2002-01-27', 45, 29);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (39, 848227, 'Aeonium', '2017-04-07', '2001-01-09', 22, 43);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (40, 828117, 'Smallflower Dwarf-flax', '2004-12-16', '2006-04-12', 5, 49);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (41, 442407, 'California Plumeseed', '2013-03-17', '2021-05-11', 46, 34);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (42, 467715, 'Snapdragon Penstemon', '2008-01-01', '2021-10-04', 26, 33);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (43, 894794, 'Arizona Sandmat', '2019-12-26', '2010-12-12', 10, 41);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (44, 274183, 'Polynesian Heliotrope', '2007-09-04', '2014-08-03', 42, 39);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (45, 373038, 'Spotted Henbit', '2013-12-17', '2004-07-16', 46, 25);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (46, 708732, 'Clubhair Mariposa Lily', '2011-02-09', '2018-11-26', 15, 28);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (47, 457319, 'Pygmy Racomitrium Moss', '2017-01-15', '2009-05-15', 13, 29);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (48, 281272, 'Scrub Spurge', '2011-01-10', '2006-03-28', 36, 45);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (49, 318618, 'Purplemat', '2005-08-11', '2010-09-25', 15, 44);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (50, 522601, 'Molokai Islandmint', '2005-12-08', '2015-06-30', 14, 26);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (51, 124750, 'Warm Springs Hawthorn', '2011-06-04', '2007-04-19', 38, 48);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (52, 518859, 'Clustered Bushmint', '2020-11-16', '2004-08-31', 36, 5);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (53, 798065, 'Largeleaf Avens', '2015-01-08', '2002-09-05', 9, 21);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (54, 672175, 'Manystem Sedge', '2006-05-13', '2002-05-17', 31, 30);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (55, 357009, 'Palmer''s Bluestar', '2004-12-11', '2007-09-25', 2, 48);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (56, 298782, 'Carson''s Waterparsnip', '2002-03-08', '2001-03-12', 33, 13);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (57, 439873, 'Cardinal Catchfly', '2018-06-22', '2008-11-23', 12, 47);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (58, 339796, 'Toringo Crab', '2018-05-02', '2007-06-17', 9, 41);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (59, 262614, 'Bolander''s Linanthus', '2017-09-17', '2001-06-02', 28, 29);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (60, 413967, 'Rio Grande Ragweed', '2014-07-24', '2015-03-22', 21, 37);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (61, 807644, 'Saffron Plum', '2013-07-10', '2011-04-12', 43, 47);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (62, 866158, 'Elegant Orange Wall Lichen', '2006-07-01', '2005-08-16', 13, 3);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (63, 420855, 'Rollandia', '2017-12-22', '2018-04-19', 44, 34);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (64, 916212, 'Fuzzy Dewberry', '2018-02-22', '2004-10-28', 5, 20);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (65, 290994, 'Hybrid Violet', '2010-07-07', '2001-06-03', 2, 49);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (66, 114586, 'Pastureweed', '2020-10-15', '2006-04-05', 42, 14);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (67, 809384, 'Malaysian Apple', '2012-03-15', '2009-11-15', 32, 42);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (68, 116583, 'Wrinkleleaf Goldenrod', '2010-09-19', '2007-07-31', 12, 36);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (69, 741246, 'Droopflower Thelypody', '2001-06-09', '2012-10-13', 17, 21);
+insert into shipping_service (ship_id, tracking_number, ship_name, day_sending, day_receiving, product_id, store_id) values (70, 650647, 'Psorotichia Lichen', '2018-07-29', '2014-05-30', 31, 36);
+
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (1, 'Horatius', 'Botha', null, 'Iran', 70);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (2, 'Alic', 'Matyas', '31000', 'Sri Lanka', 49);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (3, 'Waring', 'Lettice', '6540', 'Philippines', 43);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (4, 'Job', 'Bloxsome', '3205', 'Slovenia', 3);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (5, 'Jocelin', 'Winteringham', null, 'China', 67);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (6, 'Marrilee', 'Dunabie', null, 'China', 38);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (7, 'Ade', 'Scrivens', '682027', 'Colombia', 22);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (8, 'Krysta', 'Fleet', null, 'China', 66);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (9, 'Adriano', 'Fassmann', '45260-000', 'Brazil', 14);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (10, 'Yoshi', 'Lardez', '60078', 'United States', 18);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (11, 'Tarrance', 'Burnep', null, 'China', 45);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (12, 'Gypsy', 'Fasler', null, 'Iran', 5);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (13, 'Garvey', 'Eick', '8160', 'South Africa', 35);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (14, 'Jehu', 'Egle of Germany', null, 'Benin', 33);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (15, 'Nathanil', 'Grinov', null, 'China', 43);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (16, 'Joelle', 'Readhead', '865-0126', 'Japan', 56);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (17, 'Anna-diana', 'Dymott', null, 'China', 43);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (18, 'Inge', 'Baggelley', '95897 CEDEX', 'France', 37);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (19, 'Olenolin', 'Napolitano', null, 'Yemen', 25);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (20, 'Robenia', 'Steet', '3025-610', 'Portugal', 53);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (21, 'Nessa', 'Knoble', '58928-000', 'Brazil', 69);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (22, 'Giordano', 'Gouthier', null, 'Venezuela', 30);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (23, 'Donalt', 'Charlton', null, 'Mongolia', 63);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (24, 'Nicolas', 'McFeate', null, 'Indonesia', 26);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (25, 'Wilhelmine', 'Cartman', null, 'China', 5);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (26, 'Joelly', 'Becerro', '389 01', 'Czech Republic', 3);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (27, 'Larine', 'Oliveira', null, 'China', 12);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (28, 'Anthe', 'Pirie', '2635-012', 'Portugal', 13);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (29, 'Goraud', 'Boribal', '582 82', 'Czech Republic', 7);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (30, 'Mendie', 'Cropton', null, 'Indonesia', 5);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (31, 'Nessy', 'Vigne', null, 'Indonesia', 21);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (32, 'Dore', 'McGill', null, 'China', 8);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (33, 'Bridgette', 'Alexander', '01-517', 'Poland', 6);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (34, 'Charmian', 'Caldera', '4446', 'Argentina', 30);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (35, 'Karleen', 'Short', '6029', 'Philippines', 14);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (36, 'Rafferty', 'Leif', '2950-691', 'Portugal', 35);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (37, 'Alix', 'Runham', null, 'Indonesia', 3);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (38, 'Baryram', 'Broodes', '43000', 'Croatia', 67);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (39, 'Perceval', 'Bovey', null, 'Uruguay', 43);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (40, 'Cori', 'Walcher', null, 'China', 41);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (41, 'Odessa', 'Cowle', 'N4N', 'Canada', 22);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (42, 'Gail', 'Tysall', '085068', 'Colombia', 27);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (43, 'Orsola', 'Banane', '3190', 'Argentina', 64);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (44, 'Ruggiero', 'Ropartz', null, 'Iran', 28);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (45, 'Redford', 'Jest', '98-432', 'Poland', 2);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (46, 'Letti', 'Nossent', null, 'Egypt', 5);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (47, 'Lucy', 'Sivorn', '32-503', 'Poland', 8);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (48, 'Constantine', 'Tayt', null, 'Madagascar', 54);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (49, 'Rolland', 'Armes', null, 'Serbia', 57);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (50, 'Joscelin', 'Shervington', '521-1342', 'Japan', 57);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (51, 'Norina', 'Medway', '413008', 'Colombia', 29);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (52, 'Estevan', 'Sirkett', null, 'Indonesia', 30);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (53, 'Barnebas', 'Feenan', null, 'Ethiopia', 17);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (54, 'Garry', 'Gaydon', null, 'China', 37);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (55, 'Urban', 'Livesey', null, 'Indonesia', 47);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (56, 'Georgie', 'Morais', null, 'China', 60);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (57, 'Marcille', 'Middlewick', null, 'Kazakhstan', 51);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (58, 'Glenn', 'Besnard', 'HMR', 'Malta', 56);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (59, 'Craig', 'Cowlin', '8421', 'Philippines', 32);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (60, 'Cesya', 'Dockrill', '87390-000', 'Brazil', 25);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (61, 'Briano', 'Petroff', '11054', 'United States', 49);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (62, 'Marion', 'Gooddie', null, 'Indonesia', 28);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (63, 'Wynn', 'Tillman', '64260-000', 'Brazil', 30);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (64, 'Inger', 'Tynnan', null, 'China', 68);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (65, 'Rowena', 'Foort', null, 'Cape Verde', 34);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (66, 'Teodorico', 'Lamyman', '9951', 'South Africa', 41);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (67, 'Riordan', 'Satterlee', '4824', 'Bulgaria', 1);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (68, 'Kimble', 'Mattaus', null, 'China', 11);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (69, 'Joletta', 'Tompsett', null, 'China', 45);
+insert into customer (customer_id, customer_f_name, customer_l_name, address, country, ship_id) values (70, 'Tome', 'Piddlehinton', '70317', 'Mexico', 67);
+
+
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (1, 'Layton', 'Soppett', null, 'Indonesia', 51, 14);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (2, 'Marcy', 'Andryushin', null, 'Belarus', 32, 4);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (3, 'Derry', 'Twohig', '32-080', 'Poland', 58, 70);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (4, 'Hamnet', 'Gatherer', '5706', 'Philippines', 11, 69);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (5, 'Penny', 'Kristiansen', null, 'Ukraine', 43, 65);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (6, 'Jania', 'Elliker', '4465', 'Bulgaria', 8, 3);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (7, 'Amery', 'Timberlake', null, 'Ivory Coast', 63, 33);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (8, 'Darren', 'Hayward', '57704 CEDEX', 'France', 36, 54);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (9, 'Avrit', 'Dewey', null, 'China', 27, 64);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (10, 'Karole', 'Yglesia', null, 'China', 2, 30);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (11, 'Nike', 'Godbolt', null, 'Peru', 39, 45);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (12, 'Rebekah', 'Edworthy', '626125', 'Russia', 58, 57);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (13, 'Elyse', 'Tompkins', null, 'Ukraine', 68, 47);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (14, 'Waylon', 'Meenan', null, 'Syria', 10, 4);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (15, 'Angelique', 'Constant', null, 'Mauritius', 26, 7);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (16, 'Belita', 'Kinavan', null, 'Iran', 25, 56);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (17, 'Felisha', 'Lecordier', '41640', 'Mexico', 27, 5);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (18, 'Collen', 'Gresly', '2921', 'Philippines', 39, 50);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (19, 'Dael', 'Klimentyonok', null, 'Indonesia', 27, 7);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (20, 'Sam', 'Beebis', '7541', 'New Zealand', 47, 48);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (21, 'Liv', 'Thurlby', null, 'China', 26, 24);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (22, 'Justus', 'Fowlston', null, 'China', 68, 57);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (23, 'Sibyl', 'Blakemore', '722 25', 'Sweden', 69, 35);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (24, 'Wilfrid', 'Hanfrey', '43-419', 'Poland', 62, 15);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (25, 'Banky', 'Claringbold', null, 'Georgia', 61, 7);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (26, 'Ardith', 'Fluin', '9625-325', 'Portugal', 34, 4);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (27, 'Kelsi', 'Kinnar', null, 'Uganda', 68, 40);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (28, 'Cris', 'Cripin', null, 'Indonesia', 25, 32);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (29, 'Pia', 'Bockin', null, 'China', 45, 65);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (30, 'Kristoffer', 'Commuzzo', null, 'Indonesia', 63, 55);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (31, 'Kore', 'Deverson', '6512', 'Philippines', 12, 39);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (32, 'Cherlyn', 'Jull', null, 'Peru', 20, 13);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (33, 'Idette', 'Geistbeck', null, 'China', 43, 56);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (34, 'Gunter', 'Schulkins', null, 'Bosnia and Herzegovina', 36, 47);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (35, 'Danyelle', 'Bow', '249111', 'Russia', 43, 30);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (36, 'Mahmud', 'De Ath', null, 'China', 54, 1);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (37, 'Rakel', 'Polson', null, 'Indonesia', 65, 25);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (38, 'Odella', 'Serridge', null, 'China', 50, 54);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (39, 'Lucita', 'Lightwood', '331 29', 'Sweden', 31, 1);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (40, 'Alicea', 'Trenchard', null, 'China', 20, 66);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (41, 'Stacee', 'Merlin', null, 'Albania', 57, 20);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (42, 'Marley', 'Ricca', '7047', 'Norway', 19, 64);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (43, 'Arney', 'Wills', '5223', 'Argentina', 67, 50);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (44, 'Jennica', 'McTerry', '4400-005', 'Portugal', 66, 48);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (45, 'Sydelle', 'Dain', 'G9A', 'Canada', 38, 35);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (46, 'Annemarie', 'Hugin', '243650', 'Russia', 24, 34);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (47, 'Lilla', 'Longrigg', '93180-000', 'Brazil', 25, 40);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (48, 'Courtnay', 'Thaine', null, 'Kazakhstan', 48, 60);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (49, 'Gunar', 'Zavattero', null, 'Gambia', 60, 65);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (50, 'Maurice', 'Huggard', '131077', 'Colombia', 49, 8);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (51, 'Bibi', 'Reeders', null, 'Chile', 59, 55);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (52, 'Sophey', 'Apedaile', '95405', 'United States', 54, 4);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (53, 'Oona', 'Seaking', '357373', 'Russia', 22, 1);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (54, 'Darlene', 'Widdicombe', '4620-091', 'Portugal', 31, 47);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (55, 'Chalmers', 'Arent', null, 'Sierra Leone', 45, 26);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (56, 'Donelle', 'Eykelhof', '19003', 'Guatemala', 57, 3);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (57, 'Rosanne', 'McNae', null, 'Iran', 33, 6);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (58, 'Foss', 'Hasser', null, 'China', 4, 38);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (59, 'Neil', 'Wolfenden', '3004', 'Netherlands', 5, 50);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (60, 'Korella', 'Kennion', null, 'China', 58, 6);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (61, 'Vivia', 'Casari', '569-0036', 'Japan', 56, 70);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (62, 'Rourke', 'Glynn', null, 'Indonesia', 19, 57);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (63, 'Barny', 'Stolworthy', null, 'Indonesia', 67, 26);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (64, 'Stace', 'Duinkerk', 'L-7634', 'Luxembourg', 14, 6);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (65, 'Flem', 'Uttridge', '273 05', 'Czech Republic', 27, 47);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (66, 'Yurik', 'Horsfield', '99-314', 'Poland', 3, 67);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (67, 'Sher', 'Dunk', '4015', 'Norway', 58, 16);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (68, 'Glennie', 'Paddington', null, 'Syria', 33, 48);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (69, 'Bambie', 'Esselin', '1213', 'Hungary', 34, 62);
+insert into regular_customer (rc_id, rc_f_name, rc_l_name, address, country, ship_id, contract_id) values (70, 'Loralie', 'Deveril', '87504', 'Mexico', 38, 58);
+
+
+---1
+Select * from customer 
+inner join shipping_service on customer.ship_id=shipping_service.ship_id 
+where shipping_service.tracking_number=123456;
+
+select * from shipping_service where shipping_service.tracking_number=123456;
+
+
+---2
+Select customer_id, max(price) from customer
+inner join shipping_service on customer.ship_id=shipping_service.ship_id 
+inner join products on products.product_id=shipping_service.product_id
+where extract(year from shipping_service.day_receiving)=extract(year from CURRENT_DATE)-1
+group by customer_id
+
+---3
+select * from products
+inner join shipping_service on products.product_id=shipping_service.product_id
+where extract(year from shipping_service.day_receiving)=extract(year from CURRENT_DATE)-1
+order by price desc limit 2
+---4
+select * from products
+inner join shipping_service on products.product_id=shipping_service.product_id
+inner join sales_data on products.product_id=sales_data.product_id
+where extract(year from shipping_service.day_receiving)=extract(year from CURRENT_DATE)-1
+order by sales_data.num_of_sales desc limit 2
+
+---7
+select customer_id, count(price) from customer
+inner join shipping_service on customer.ship_id=shipping_service.ship_id 
+inner join products on products.product_id=shipping_service.product_id
+where extract(month from shipping_service.day_receiving)=extract(month from CURRENT_DATE)-1
+group by customer_id
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
